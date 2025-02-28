@@ -3,10 +3,19 @@
 
 #include "laullstm32.h"
 
+// 轮子带电机
 typedef struct{
     uint16_t pin_0, pin_1;
     GPIO_TypeDef* pin_mode_0, *pin_mode_1;
 }wheel;
+
+// 机械臂舵机
+typedef struct{
+    TIM_HandleTypeDef* htim;
+    uint32_t tim_channel;
+    uint16_t pin;
+    GPIO_TypeDef* pin_mode;
+}arm_servo;
 
 // tim 计时器
 extern TIM_HandleTypeDef tim2, tim3;
@@ -30,7 +39,7 @@ extern wheel w4;
 #define TRACKING_PIN_2 GPIO_PIN_12
 #define TRACKING_PIN_3 GPIO_PIN_13
 #define TRACKING_PIN_4 GPIO_PIN_14
-#define TRACKING_PORT GPIOF
+#define TRACKING_PORT GPIOD
 
 
 
@@ -53,7 +62,11 @@ uint8_t read_tracking_sensor(uint16_t pin);
 // 巡线控制函数
 void car_line_following_control();
 
+// 初始化要使用的引脚
+void demo_gpio_init();
 
+// 初始化tim
+void demo_tim_init();
 
 
 

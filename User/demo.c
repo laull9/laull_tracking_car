@@ -1,4 +1,5 @@
 #include "demo.h"
+#include "wheel.h"
 
 // 共享变量定义
 TIM_HandleTypeDef tim2, tim3;
@@ -104,4 +105,36 @@ void car_line_following_control() {
         // 其他情况，直走
         car_go_forward();
     }
+}
+
+
+void demo_gpio_init(){
+    // 初始化四个轮子的GPIO
+    __HAL_RCC_GPIOF_CLK_ENABLE();
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = \
+    GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | \
+    GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7 | GPIO_PIN_8;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+
+    // 初始化循迹模块的GPIO
+    __HAL_RCC_GPIOD_CLK_ENABLE();
+    GPIO_InitTypeDef GPIO_InitStruct_2 = {0};
+    GPIO_InitStruct.Pin = \
+    TRACKING_PIN_1 | TRACKING_PIN_2 | \
+    TRACKING_PIN_3 | TRACKING_PIN_4 ;
+    GPIO_InitStruct_2.Mode = GPIO_MODE_AF_INPUT;
+    GPIO_InitStruct_2.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(TRACKING_PORT, &GPIO_InitStruct_2);
+}
+
+void demo_tim_init(){
+    laull_tim_init(tim2, 2, 1, 20000, 72-1, TIM_OCPOLARITY_HIGH); // A0
+    laull_tim_init(tim2, 2, 2, 20000, 72-1, TIM_OCPOLARITY_HIGH); // A1
+    laull_tim_init(tim2, 2, 3, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B10
+    laull_tim_init(tim2, 2, 4, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B11
+    laull_tim_init(tim3, 3, 3, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B0
+    laull_tim_init(tim3, 3, 4, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B1
 }

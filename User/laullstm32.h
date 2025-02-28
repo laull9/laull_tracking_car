@@ -55,12 +55,12 @@ extern "C"{
 
 
 //---------------激活gpio针脚---------------
-//输入针脚名+数字，如laull_gpio_init(A, 10)初始化A10针脚
-#define laull_gpio_init(GPIO_TYPE, GPIO_NUM) do{   \
+//输入针脚名+数字+模式，如laull_gpio_init(A, 10, GPIO_MODE_AF_PP)初始化A10针脚
+#define laull_gpio_init(GPIO_TYPE, GPIO_NUM, GPIO_MODE) do{   \
   __HAL_RCC_GPIO##GPIO_TYPE##_CLK_ENABLE();        \
   GPIO_InitTypeDef GPIO_InitStruct = {0};          \
   GPIO_InitStruct.Pin = GPIO_PIN_##GPIO_NUM;       \
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;          \
+  GPIO_InitStruct.Mode = GPIO_MODE;                \
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;     \
   HAL_GPIO_Init(GPIO##GPIO_TYPE, &GPIO_InitStruct);\
 }while (0);

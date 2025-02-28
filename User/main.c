@@ -27,14 +27,8 @@ int main(){
 	delay_init(72);
 	usart_init(115200);
 
-
-    laull_tim_init(tim2, 2, 1, 20000, 72-1, TIM_OCPOLARITY_HIGH); // A0
-    laull_tim_init(tim2, 2, 2, 20000, 72-1, TIM_OCPOLARITY_HIGH); // A1
-    laull_tim_init(tim2, 2, 3, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B10
-    laull_tim_init(tim2, 2, 4, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B11
-    laull_tim_init(tim3, 3, 3, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B0
-    laull_tim_init(tim3, 3, 4, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B1
-
+    demo_gpio_init();
+    demo_tim_init();
 
     TIM_SET_DUTY_CYCLE(tim2, 1, 20);
     TIM_SET_DUTY_CYCLE(tim2, 2, 40);
