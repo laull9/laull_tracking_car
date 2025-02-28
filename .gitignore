@@ -1,0 +1,7 @@
+readme.txt
+*.bat
+Output
+.vscode
+DebugConfig
+.cmsis/
+Output/
