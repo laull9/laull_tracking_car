@@ -1,7 +1,6 @@
 // 需要编码为GB2312
 
 #include "demo.h"
-#include "ov7725.h"
 
 // TIM定义
 TIM_HandleTypeDef tim2, tim3;
@@ -39,10 +38,61 @@ int main(){
     sys_stm32_clock_init(RCC_PLL_MUL9);
     delay_init(72);
     usart_init(115200);
+    key_init();
 
     demo_gpio_init();
     demo_tim_init();
 
+    // 开始阶段，收起机械臂，张开抓取夹
     car_set_speed(90);
-    
+    retract_arm();
+    release_object();
+
+    // 按下KEY0按钮开始抓取物块
+    while (key_scan(0) != KEY0){
+        delay_ms(20);
+    }
+    grab_object();
+
+    // 第一部分：巡线直到检测到紫色区域，放置货物
+    camera_Color color = camera_unknown;
+    while (color != camera_purple){
+        car_line_following_control();
+        color = camera_scan_color();
+    }
+    delay_ms(1000 * 1);
+    car_stop();
+    rotate_base_right();
+    release_object();
+    delay_ms(1000 * 2);
+
+    // 第二部分：巡线直到检测到红色区域，移动到可达区并返回
+    retract_arm();
+    car_go_forward();
+    while (color != camera_red){
+        car_line_following_control();
+        color = camera_scan_color();
+    }
+    delay_ms(1000 * 1);
+    uint32_t _timer = 0;
+    car_move_right();
+    while (color != camera_yellow){
+        color = camera_scan_color();
+        delay_ms(10);
+        _timer++;
+    }
+    car_move_left();
+    while (_timer--){
+        color = camera_scan_color();
+        delay_ms(10);
+    }
+    car_stop();
+
+    // 第三部分：巡线直到检测到红色区域，移动到可达区并返回
+    while (car_line_following_control() != choice_stop){
+        delay_ms(10);
+    }
+    car_go_forward();
+    delay_ms(1000 * 2);
+    car_stop();
 }

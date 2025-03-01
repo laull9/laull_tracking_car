@@ -1,6 +1,6 @@
 #include "camera.h"
 
-camera_Color camera_scan_color(void)
+camera_Color camera_scan_color()
 {
     uint32_t i, j;
     uint16_t color, __color = 0;

@@ -50,7 +50,7 @@ uint8_t read_tracking_sensor(uint16_t pin) {
 }
 
 
-void car_line_following_control() {
+line_following_choice car_line_following_control() {
     uint8_t farleft = read_tracking_sensor(TRACKING_PIN_1);
     uint8_t midleft = read_tracking_sensor(TRACKING_PIN_2);
     uint8_t midright = read_tracking_sensor(TRACKING_PIN_3);
@@ -60,24 +60,31 @@ void car_line_following_control() {
     if (farleft && midleft && midright && farright) {
         // 四个传感器都检测到黑线，停止
         car_stop();
+        return choice_stop;
     } else if (!farleft && !midleft && !midright && !farright) {
         // 四个传感器都检测到白线，直走
         car_go_forward();
+        return choice_forward;
     } else if (farleft && !midleft && !midright && !farright) {
         // 最左边传感器检测到黑线，左转
         car_turn_left();
+        return choice_turnleft;
     } else if (!farleft && !midleft && !midright && farright) {
         // 最右边传感器检测到黑线，右转
         car_turn_right();
+        return choice_turnright;
     } else if (farleft && midleft && !midright && !farright) {
         // 左边两个传感器检测到黑线，左转
         car_turn_left();
+        return choice_turnleft;
     } else if (!farleft && !midleft && midright && farright) {
         // 右边两个传感器检测到黑线，右转
         car_turn_right();
+        return choice_turnright;
     } else {
         // 其他情况，直走
         car_go_forward();
+        return choice_other;
     }
 }
 
