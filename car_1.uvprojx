@@ -1029,6 +1029,21 @@
               <FileType>5</FileType>
               <FilePath>User/wheel.h</FilePath>
             </File>
+            <File>
+              <FileName>arm_servo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>User/arm_servo.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_servo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>User/arm_servo.h</FilePath>
+            </File>
+            <File>
+              <FileName>setting.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>User/setting.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
