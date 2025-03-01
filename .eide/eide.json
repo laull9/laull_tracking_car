@@ -45,6 +45,12 @@
           },
           {
             "path": "User/wheel.h"
+          },
+          {
+            "path": "User/arm_servo.c"
+          },
+          {
+            "path": "User/arm_servo.h"
           }
         ],
         "folders": []

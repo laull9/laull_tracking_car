@@ -1,12 +1,4 @@
 #include "demo.h"
-#include "wheel.h"
-
-// 共享变量定义
-TIM_HandleTypeDef tim2, tim3;
-wheel w1 = {GPIO_PIN_1, GPIO_PIN_2, GPIOF, GPIOF};
-wheel w2 = {GPIO_PIN_3, GPIO_PIN_4, GPIOF, GPIOF};
-wheel w3 = {GPIO_PIN_5, GPIO_PIN_6, GPIOF, GPIOF};
-wheel w4 = {GPIO_PIN_7, GPIO_PIN_8, GPIOF, GPIOF};
 
 
 void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
@@ -46,24 +38,6 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
         __HAL_AFIO_REMAP_TIM3_PARTIAL();  // Partial remap (CH1/PB4, CH2/PB5, CH3/PB0, CH4/PB1)
 
     }
-}
-
-uint16_t angle_to_tim_val(float angle)
-{
-    uint16_t ret;
-    if((angle < 0)||(angle > 180))
-    {
-        ret = 0;
-    }
-    else
-    {
-        ret = (1500 + (int)((float)((angle - 90) * 100 / 9)));
-        if((ret < 500)||(ret > 2500))
-        {
-            ret = 0;
-        }
-    }
-    return ret;
 }
 
 
@@ -110,22 +84,22 @@ void car_line_following_control() {
 
 void demo_gpio_init(){
     // 初始化四个轮子的GPIO
-    __HAL_RCC_GPIOF_CLK_ENABLE();
+    WHEEL_PIN_ENABLE();
     GPIO_InitTypeDef GPIO_InitStruct = {0};
-    GPIO_InitStruct.Pin = \
-    GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | \
-    GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7 | GPIO_PIN_8;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pin =
+    WHEEL_PIN_1_1 | WHEEL_PIN_1_2 | WHEEL_PIN_2_1 | WHEEL_PIN_2_2 |
+    WHEEL_PIN_3_1 | WHEEL_PIN_3_2 | WHEEL_PIN_4_1 | WHEEL_PIN_4_2 ;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP; // 推挽输出
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+    HAL_GPIO_Init(WHEEL_PORT, &GPIO_InitStruct);
 
     // 初始化循迹模块的GPIO
-    __HAL_RCC_GPIOD_CLK_ENABLE();
+    TRACKING_PIN_ENABLE();
     GPIO_InitTypeDef GPIO_InitStruct_2 = {0};
-    GPIO_InitStruct.Pin = \
-    TRACKING_PIN_1 | TRACKING_PIN_2 | \
+    GPIO_InitStruct.Pin =
+    TRACKING_PIN_1 | TRACKING_PIN_2 |
     TRACKING_PIN_3 | TRACKING_PIN_4 ;
-    GPIO_InitStruct_2.Mode = GPIO_MODE_AF_INPUT;
+    GPIO_InitStruct_2.Mode = GPIO_MODE_AF_INPUT; // 推挽输入
     GPIO_InitStruct_2.Speed = GPIO_SPEED_FREQ_LOW;
     HAL_GPIO_Init(TRACKING_PORT, &GPIO_InitStruct_2);
 }
