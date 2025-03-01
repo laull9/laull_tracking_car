@@ -54,6 +54,12 @@
           },
           {
             "path": "User/setting.h"
+          },
+          {
+            "path": "User/camera.c"
+          },
+          {
+            "path": "User/camera.h"
           }
         ],
         "folders": []
@@ -139,6 +145,15 @@
               },
               {
                 "path": "Drivers/BSP/ATK_MO1053/atk_mo1053.c"
+              },
+              {
+                "path": "Drivers/BSP/OV7725/ov7725.c"
+              },
+              {
+                "path": "Drivers/BSP/OV7725/sccb.c"
+              },
+              {
+                "path": "Drivers/BSP/EXTI/exti.c"
               }
             ],
             "folders": []
@@ -637,7 +652,9 @@
           "RTE/_elite_test",
           "Middlewares/USMART",
           "Drivers/BSP/ATK_MO1053",
-          "Drivers/BSP/VS10XX"
+          "Drivers/BSP/VS10XX",
+          "Drivers/BSP/OV7725",
+          "Drivers/BSP/EXTI"
         ],
         "libList": [],
         "defineList": [

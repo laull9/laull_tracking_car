@@ -1,6 +1,7 @@
 // 需要编码为GB2312
 
 #include "demo.h"
+#include "ov7725.h"
 
 // TIM定义
 TIM_HandleTypeDef tim2, tim3;
@@ -35,9 +36,9 @@ TIM_HandleTypeDef tim2, tim3;
 
 int main(){
     HAL_Init();
-	sys_stm32_clock_init(RCC_PLL_MUL9);
-	delay_init(72);
-	usart_init(115200);
+    sys_stm32_clock_init(RCC_PLL_MUL9);
+    delay_init(72);
+    usart_init(115200);
 
     demo_gpio_init();
     demo_tim_init();

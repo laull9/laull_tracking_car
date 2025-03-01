@@ -4,6 +4,7 @@
 #include "laullstm32.h"
 #include "arm_servo.h"
 #include "wheel.h"
+#include "camera.h"
 
 
 // 读取循迹模块的值
