@@ -96,7 +96,7 @@ void demo_gpio_init(){
     GPIO_InitStruct.Pin =
     WHEEL_PIN_1_1 | WHEEL_PIN_1_2 | WHEEL_PIN_2_1 | WHEEL_PIN_2_2 |
     WHEEL_PIN_3_1 | WHEEL_PIN_3_2 | WHEEL_PIN_4_1 | WHEEL_PIN_4_2 ;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP; // 推挽输出
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP; // 推挽输出
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     HAL_GPIO_Init(WHEEL_PORT, &GPIO_InitStruct);
 
