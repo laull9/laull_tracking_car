@@ -63,7 +63,7 @@ void car_turn_right() {
 
 void car_move_left() {
     // 左前轮后退，右前轮前进，左后轮前进，右后轮后退
-    WHEEL_SET_NOW_SPEED_4(w1, w2, w3, w4, goleft);
+    WHEEL_SET_NOW_SPEED_4(w1, w2, w3, w4, moveleft);
     wheel_runback(&w1);
     wheel_run(&w2);
     wheel_run(&w3);
@@ -72,7 +72,7 @@ void car_move_left() {
 
 void car_move_right() {
     // 左前轮前进，右前轮后退，左后轮后退，右后轮前进
-    WHEEL_SET_NOW_SPEED_4(w1, w2, w3, w4, goright);
+    WHEEL_SET_NOW_SPEED_4(w1, w2, w3, w4, moveright);
     wheel_run(&w1);
     wheel_runback(&w2);
     wheel_runback(&w3);

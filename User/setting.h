@@ -4,7 +4,7 @@
 
 // 轮子速度
 typedef struct{
-    uint8_t forward, backward, goleft, goright, turnleft, turnright;
+    uint8_t forward, backward, moveleft, moveright, turnleft, turnright;
 }wheel_speed;
 
 // 轮子带电机
