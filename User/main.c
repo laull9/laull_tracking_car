@@ -3,21 +3,30 @@
 #include "demo.h"
 
 // TIM定义
-TIM_HandleTypeDef tim2, tim3;
+TIM_HandleTypeDef tim2, tim3, tim4;
+// UART串口通讯: TX-B10 RX-B11
 
 //-----------------------------------------------------------
 //-----------------------GPIO接线表---------------------------
 //     电机驱动板 1: 左右前轮
-//     轮子1:  正负极连F1 F2       PWM连tim2-3 B10        输出
-        wheel w1 = {GPIO_PIN_1, GPIO_PIN_2, GPIOF, GPIOF};
-//     轮子2:  正负极连F3 F4       PWM连tim2-3 B10        输出
-        wheel w2 = {GPIO_PIN_3, GPIO_PIN_4, GPIOF, GPIOF};
+//     轮子1:  正负极连F1 F2       PWM连tim4-1 D12        输出
+        wheel w1 = {WHEEL_PIN_1_1, WHEEL_PIN_1_2, WHEEL_PORT, WHEEL_PORT, &tim4, TIM_CHANNEL_1, 
+        /*单轮速度配置*/{/*forward*/40, /*backward*/40, /*goleft*/40, /*goright*/40, /*turnleft*/40, /*turnright*/40}};
+
+//     轮子2:  正负极连F3 F4       PWM连tim4-2 D13        输出
+        wheel w2 = {WHEEL_PIN_2_1, WHEEL_PIN_2_2, WHEEL_PORT, WHEEL_PORT, &tim4, TIM_CHANNEL_2, 
+        /*单轮速度配置*/{/*forward*/40, /*backward*/40, /*goleft*/40, /*goright*/40, /*turnleft*/40, /*turnright*/40}};
+        
 //     电机驱动板 2: 左右后轮
-//     轮子3:  正负极连F5 F6       PWM连tim2-3 B10        输出
-        wheel w3 = {GPIO_PIN_5, GPIO_PIN_6, GPIOF, GPIOF};
-//     轮子4:  正负极连F7 F8       PWM连tim2-3 B10        输出
-        wheel w4 = {GPIO_PIN_7, GPIO_PIN_8, GPIOF, GPIOF};
-//     
+//     轮子3:  正负极连F5 F6       PWM连tim4-3 D14        输出
+        wheel w3 = {WHEEL_PIN_3_1, WHEEL_PIN_3_2, WHEEL_PORT, WHEEL_PORT, &tim4, TIM_CHANNEL_3, 
+        /*单轮速度配置*/{/*forward*/40, /*backward*/40, /*goleft*/40, /*goright*/40, /*turnleft*/40, /*turnright*/40}};
+        
+//     轮子4:  正负极连F7 F8       PWM连tim4-4 D15        输出
+        wheel w4 = {WHEEL_PIN_4_1, WHEEL_PIN_4_2, WHEEL_PORT, WHEEL_PORT, &tim4, TIM_CHANNEL_4, 
+        /*单轮速度配置*/{/*forward*/40, /*backward*/40, /*goleft*/40, /*goright*/40, /*turnleft*/40, /*turnright*/40}};
+        
+  
 //     机械臂-舵机1:  正负极连5v电源     PWM连tim2-1  A0   输出
         arm_servo as1 = {&tim2, TIM_CHANNEL_1};
 //     机械臂-舵机2:  正负极连5v电源     PWM连tim2-2  A1   输出
@@ -29,7 +38,7 @@ TIM_HandleTypeDef tim2, tim3;
 //     机械臂-舵机5:  正负极连5v电源     PWM连tim3-4  B1   输出
         arm_servo as5 = {&tim3, TIM_CHANNEL_4};
 //
-//     循迹模块--4输入    D11 D12 D13 D14                 输入
+//     循迹模块--4输入    G3 G4 G5 G6                     输入
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 
@@ -44,7 +53,7 @@ int main(){
     demo_tim_init();
 
     // 开始阶段，收起机械臂，张开抓取夹
-    car_set_speed(90);
+
     retract_arm();
     release_object();
 

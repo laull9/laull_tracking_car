@@ -34,18 +34,18 @@
  * 默认是针对USART1的.
  * 注意: 通过修改这几个宏定义,可以支持USART1~UART5任意一个串口.
  */
-#define USART_TX_GPIO_PORT                  GPIOA
-#define USART_TX_GPIO_PIN                   GPIO_PIN_9
-#define USART_TX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
+#define USART_TX_GPIO_PORT                  GPIOB
+#define USART_TX_GPIO_PIN                   GPIO_PIN_10
+#define USART_TX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOB_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
 
-#define USART_RX_GPIO_PORT                  GPIOA
-#define USART_RX_GPIO_PIN                   GPIO_PIN_10
-#define USART_RX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
+#define USART_RX_GPIO_PORT                  GPIOB
+#define USART_RX_GPIO_PIN                   GPIO_PIN_11
+#define USART_RX_GPIO_CLK_ENABLE()          do{ __HAL_RCC_GPIOB_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
 
-#define USART_UX                            USART1
-#define USART_UX_IRQn                       USART1_IRQn
-#define USART_UX_IRQHandler                 USART1_IRQHandler
-#define USART_UX_CLK_ENABLE()               do{ __HAL_RCC_USART1_CLK_ENABLE(); }while(0)  /* USART1 时钟使能 */
+#define USART_UX                            USART3
+#define USART_UX_IRQn                       USART3_IRQn
+#define USART_UX_IRQHandler                 USART3_IRQHandler
+#define USART_UX_CLK_ENABLE()               do{ __HAL_RCC_USART3_CLK_ENABLE(); }while(0)  /* USART1 时钟使能 */
 
 /******************************************************************************************/
 

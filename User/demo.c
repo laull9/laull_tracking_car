@@ -29,13 +29,29 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
         GPIO_InitTypeDef gpio_init_struct;
         __HAL_RCC_GPIOB_CLK_ENABLE();
         __HAL_RCC_TIM3_CLK_ENABLE();
-        gpio_init_struct.Pin = GPIO_PIN_5 | GPIO_PIN_4 ;
+        gpio_init_struct.Pin = GPIO_PIN_5 | GPIO_PIN_4 | GPIO_PIN_0 | GPIO_PIN_1;
         gpio_init_struct.Mode = GPIO_MODE_AF_PP;
         gpio_init_struct.Pull = GPIO_PULLUP;
         gpio_init_struct.Speed = GPIO_SPEED_FREQ_HIGH;
         HAL_GPIO_Init(GPIOB, &gpio_init_struct);
         __HAL_RCC_AFIO_CLK_ENABLE();
         __HAL_AFIO_REMAP_TIM3_PARTIAL();  // Partial remap (CH1/PB4, CH2/PB5, CH3/PB0, CH4/PB1)
+
+    }
+
+    if (htim->Instance == TIM4)
+
+    {
+        GPIO_InitTypeDef gpio_init_struct;
+        __HAL_RCC_GPIOD_CLK_ENABLE();
+        __HAL_RCC_TIM4_CLK_ENABLE();
+        gpio_init_struct.Pin = GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
+        gpio_init_struct.Mode = GPIO_MODE_AF_PP;
+        gpio_init_struct.Pull = GPIO_PULLUP;
+        gpio_init_struct.Speed = GPIO_SPEED_FREQ_HIGH;
+        HAL_GPIO_Init(GPIOD, &gpio_init_struct);
+        __HAL_RCC_AFIO_CLK_ENABLE();
+        __HAL_AFIO_REMAP_TIM4_ENABLE();  // Full remap (CH1/PD12, CH2/PD13, CH3/PD14, CH4/PD15)
 
     }
 }
@@ -116,6 +132,12 @@ void demo_tim_init(){
     laull_tim_init(tim2, 2, 2, 20000, 72-1, TIM_OCPOLARITY_HIGH); // A1
     laull_tim_init(tim2, 2, 3, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B10
     laull_tim_init(tim2, 2, 4, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B11
+    laull_tim_init(tim3, 3, 1, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B4
+    laull_tim_init(tim3, 3, 2, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B5
     laull_tim_init(tim3, 3, 3, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B0
     laull_tim_init(tim3, 3, 4, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B1
+    laull_tim_init(tim4, 4, 1, 20000, 72-1, TIM_OCPOLARITY_HIGH); // D12
+    laull_tim_init(tim4, 4, 2, 20000, 72-1, TIM_OCPOLARITY_HIGH); // D13
+    laull_tim_init(tim4, 4, 3, 20000, 72-1, TIM_OCPOLARITY_HIGH); // D14
+    laull_tim_init(tim4, 4, 4, 20000, 72-1, TIM_OCPOLARITY_HIGH); // D15
 }

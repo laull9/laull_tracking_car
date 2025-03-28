@@ -611,7 +611,7 @@
       "uploader": "STLink",
       "uploadConfig": {
         "bin": "",
-        "proType": "JTAG",
+        "proType": "SWD",
         "resetMode": "default",
         "runAfterProgram": true,
         "speed": 4000,
