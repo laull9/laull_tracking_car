@@ -7,20 +7,32 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
     if (htim->Instance == TIM2)
 
     {
-        GPIO_InitTypeDef gpio_init_struct;
+        GPIO_InitTypeDef gpio_init_struct = {0};
+
+        // 使能相关时钟
         __HAL_RCC_GPIOA_CLK_ENABLE();
         __HAL_RCC_GPIOB_CLK_ENABLE();
         __HAL_RCC_TIM2_CLK_ENABLE();
-        gpio_init_struct.Pin = GPIO_PIN_10 | GPIO_PIN_11;
-        gpio_init_struct.Mode = GPIO_MODE_AF_PP;
+        __HAL_RCC_AFIO_CLK_ENABLE(); // 开启AFIO时钟
+
+        // 禁用JTAG以释放PA15、PB3、PB4
+        __HAL_AFIO_REMAP_SWJ_NOJTAG();
+
+        // 应用TIM2的部分重映射1
+        __HAL_AFIO_REMAP_TIM2_PARTIAL_1();
+
+        // 配置GPIO参数
+        gpio_init_struct.Mode = GPIO_MODE_AF_PP; // 复用推挽输出
         gpio_init_struct.Pull = GPIO_PULLUP;
         gpio_init_struct.Speed = GPIO_SPEED_FREQ_HIGH;
-        HAL_GPIO_Init(GPIOB, &gpio_init_struct);
-        gpio_init_struct.Pin = GPIO_PIN_0 | GPIO_PIN_1;
-        HAL_GPIO_Init(GPIOA, &gpio_init_struct);
-        __HAL_RCC_AFIO_CLK_ENABLE();
-        __HAL_AFIO_REMAP_TIM2_PARTIAL_2();  // Partial remap (CH1/ETR/PA0,  CH2/PA1, CH3/PB10, CH4/PB11)
 
+        // 初始化PB3 (TIM2_CH2)
+        gpio_init_struct.Pin = GPIO_PIN_3;
+        HAL_GPIO_Init(GPIOB, &gpio_init_struct);
+
+        // 初始化PA15 (TIM2_CH1)、PA2 (TIM2_CH3)、PA3 (TIM2_CH4)
+        gpio_init_struct.Pin = GPIO_PIN_15 | GPIO_PIN_2 | GPIO_PIN_3;
+        HAL_GPIO_Init(GPIOA, &gpio_init_struct);
     }
 
     if (htim->Instance == TIM3)
@@ -128,10 +140,10 @@ void demo_gpio_init(){
 }
 
 void demo_tim_init(){
-    laull_tim_init(tim2, 2, 1, 20000, 72-1, TIM_OCPOLARITY_HIGH); // A0
-    laull_tim_init(tim2, 2, 2, 20000, 72-1, TIM_OCPOLARITY_HIGH); // A1
-    laull_tim_init(tim2, 2, 3, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B10
-    laull_tim_init(tim2, 2, 4, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B11
+    laull_tim_init(tim2, 2, 1, 20000, 72-1, TIM_OCPOLARITY_HIGH); // A15
+    laull_tim_init(tim2, 2, 2, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B3
+    laull_tim_init(tim2, 2, 3, 20000, 72-1, TIM_OCPOLARITY_HIGH); // A2
+    laull_tim_init(tim2, 2, 4, 20000, 72-1, TIM_OCPOLARITY_HIGH); // A3
     laull_tim_init(tim3, 3, 1, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B4
     laull_tim_init(tim3, 3, 2, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B5
     laull_tim_init(tim3, 3, 3, 20000, 72-1, TIM_OCPOLARITY_HIGH); // B0

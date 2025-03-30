@@ -27,11 +27,11 @@ TIM_HandleTypeDef tim2, tim3, tim4;
         /*单轮速度配置*/{/*forward*/40, /*backward*/40, /*moveleft*/40, /*moveright*/40, /*turnleft*/40, /*turnright*/40}};
         
   
-//     机械臂-舵机1:  正负极连5v电源     PWM连tim2-1  A0   输出
+//     机械臂-舵机1:  正负极连5v电源     PWM连tim2-1  A15  输出
         arm_servo as1 = {&tim2, TIM_CHANNEL_1};
-//     机械臂-舵机2:  正负极连5v电源     PWM连tim2-2  A1   输出
+//     机械臂-舵机2:  正负极连5v电源     PWM连tim2-2  B3   输出
         arm_servo as2 = {&tim2, TIM_CHANNEL_2};
-//     机械臂-舵机3:  正负极连5v电源     PWM连tim2-4  B11  输出
+//     机械臂-舵机3:  正负极连5v电源     PWM连tim2-4  A3   输出
         arm_servo as3 = {&tim2, TIM_CHANNEL_4};
 //     机械臂-舵机4:  正负极连5v电源     PWM连tim3-3  B0   输出
         arm_servo as4 = {&tim3, TIM_CHANNEL_3};
@@ -104,6 +104,7 @@ int main(){
     delay_init(72);
     usart_init(115200);
     key_init();
+    led_init();
 
     demo_gpio_init();
     demo_tim_init();
@@ -113,15 +114,11 @@ int main(){
         switch (k)
         {
         case KEY0_PRES:
-            
+            run_commanda_loop();
             break;
         
         case KEY1_PRES:
             run_mainrace();
-            break;
-        
-        case WKUP_PRES:
-            run_commanda_loop();
             break;
         }
     }

@@ -53,12 +53,14 @@ bool _handle_set_speed(const char* target, float data) {
 
 void handle_exit(){
     commands_looping = 0;
+    printf("exited\n");
+    LED1_OFF();
 }
 
     // 处理set命令
 void handle_set(const char* target, float data) {
     if(_handle_set_speed(target, data))
-        printf("done set");;
+        printf("done set\n");;
 }
 
     // 处理run命令
@@ -90,7 +92,7 @@ void handle_run(const char* target, float time) {
     else{
         return;
     }
-    printf("done run");
+    printf("done run\n");
 }
 
 static float parse_float(const uint8_t *str, uint16_t len) {
@@ -206,14 +208,13 @@ void parse_commands(uint8_t* buffer, uint16_t len) {
             // 转换并处理命令
             handle_run(target, parse_float((uint8_t*)time_str, t_idx2));
         }
-        else if (i + 4 < len && 
+        else if (i + 3 < len && 
             buffer[i]   == 'e' &&
             buffer[i+1] == 'x' &&
             buffer[i+2] == 'i' &&
-            buffer[i+3] == 't' &&
-            buffer[i+4] == ' ') 
+            buffer[i+3] == 't')
         {
-            i += 5;
+            i += 4;
             handle_exit();
         }
         else {
@@ -224,14 +225,23 @@ void parse_commands(uint8_t* buffer, uint16_t len) {
 
 void run_commanda_loop(){
     commands_looping = 1;
+    uint8_t c_led = 0;
     while (commands_looping)
     {
         if (g_usart_rx_sta & 0x8000)        /* 接收到了数据? */
         {
-            parse_commands(g_usart_rx_buf, g_usart_rx_sta & 0x3fff);
+            uint16_t len = g_usart_rx_sta & 0x3fff;
+            parse_commands(g_usart_rx_buf, len);
             g_usart_rx_sta = 0;
+            for (uint16_t i = 0; i < len ; ++i){
+                g_usart_rx_buf[i] = 0;
+            }
         }
         delay_ms(10);
+        if(++c_led == 50){
+            LED1_TOGGLE();
+            c_led = 0;
+        }
     }
     
 }
