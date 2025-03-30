@@ -5,6 +5,7 @@
 #include "arm_servo.h"
 #include "wheel.h"
 #include "camera.h"
+#include "usart_commad.h"
 
 typedef enum {
     choice_stop, choice_forward, choice_turnleft, choice_turnright, choice_other

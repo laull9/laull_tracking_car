@@ -42,16 +42,7 @@ TIM_HandleTypeDef tim2, tim3, tim4;
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 
-int main(){
-    HAL_Init();
-    sys_stm32_clock_init(RCC_PLL_MUL9);
-    delay_init(72);
-    usart_init(115200);
-    key_init();
-
-    demo_gpio_init();
-    demo_tim_init();
-
+void run_mainrace(){
     // 开始阶段，收起机械臂，张开抓取夹
 
     retract_arm();
@@ -104,4 +95,35 @@ int main(){
     car_go_forward();
     delay_ms(1000 * 2);
     car_stop();
+}
+
+
+int main(){
+    HAL_Init();
+    sys_stm32_clock_init(RCC_PLL_MUL9);
+    delay_init(72);
+    usart_init(115200);
+    key_init();
+
+    demo_gpio_init();
+    demo_tim_init();
+
+    for(uint8_t k;;){
+        k = key_scan(0);
+        switch (k)
+        {
+        case KEY0:
+            
+            break;
+        
+        case KEY1:
+            run_mainrace();
+            break;
+        
+        case WK_UP:
+            commands_looping();
+            break;
+        }
+    }
+    
 }

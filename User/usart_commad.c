@@ -2,6 +2,7 @@
 
 #define IS_DIGIT(c) ((c) >= '0' && (c) <= '9')
 #define str_equal(s1, s2) (strcmp(s1, s2) == 0)
+bool commands_looping = 0;
 
 void _car_time_stop(float time){
     if (time != 0){
@@ -10,7 +11,7 @@ void _car_time_stop(float time){
     }
 }
 
-uint8_t _handle_set_speed(const char* target, float data) {
+bool _handle_set_speed(const char* target, float data) {
     size_t len = strlen(target);
     if (len < 3) return 0;
     // 检查是否以'w'开头
@@ -50,9 +51,14 @@ uint8_t _handle_set_speed(const char* target, float data) {
     return 1;
 }
 
+void handle_exit(){
+    commands_looping = 0;
+}
+
     // 处理set命令
 void handle_set(const char* target, float data) {
-    if(_handle_set_speed());
+    if(_handle_set_speed())
+        printf("done set");;
 }
 
     // 处理run命令
@@ -81,6 +87,10 @@ void handle_run(const char* target, float time) {
         car_turn_right();
         _car_time_stop(time);
     }
+    else{
+        return;
+    }
+    printf("done run");
 }
 
 static float parse_float(const uint8_t *str, uint16_t len) {
@@ -196,8 +206,32 @@ void parse_commands(uint8_t* buffer, uint16_t len) {
             // 转换并处理命令
             handle_run(target, parse_float((uint8_t*)time_str, t_idx2));
         }
+        else if (i + 4 < len && 
+            buffer[i]   == 'e' &&
+            buffer[i+1] == 'x' &&
+            buffer[i+2] == 'i' &&
+            buffer[i+3] == 't' &&
+            buffer[i+4] == ' ') 
+        {
+            i += 5;
+            handle_exit();
+        }
         else {
             i++;  // 继续查找
         }
     }
+}
+
+void run_commanda_loop(){
+    commands_looping = 1;
+    while (commands_looping)
+    {
+        if (g_usart_rx_sta & 0x8000)        /* 接收到了数据? */
+        {
+            parse_commands(g_usart_rx_buf, g_usart_rx_sta & 0x3fff);
+            g_usart_rx_sta = 0;
+        }
+        delay_ms(10);
+    }
+    
 }
