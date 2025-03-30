@@ -60,6 +60,12 @@
           },
           {
             "path": "User/camera.h"
+          },
+          {
+            "path": "User/usart_commad.c"
+          },
+          {
+            "path": "User/usart_commad.h"
           }
         ],
         "folders": []

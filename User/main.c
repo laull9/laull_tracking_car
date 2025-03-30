@@ -112,16 +112,16 @@ int main(){
         k = key_scan(0);
         switch (k)
         {
-        case KEY0:
+        case KEY0_PRES:
             
             break;
         
-        case KEY1:
+        case KEY1_PRES:
             run_mainrace();
             break;
         
-        case WK_UP:
-            commands_looping();
+        case WKUP_PRES:
+            run_commanda_loop();
             break;
         }
     }

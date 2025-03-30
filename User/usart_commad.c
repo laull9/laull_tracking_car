@@ -18,7 +18,7 @@ bool _handle_set_speed(const char* target, float data) {
     if (target[0] != 'w') return 0;
     // 提取轮子编号（1-4）
     char wheel_num_char = target[1];
-    if (wheel_num_char < '1' || wheel_num_char > '4') return;
+    if (wheel_num_char < '1' || wheel_num_char > '4') return 0;
     int wheel_num = wheel_num_char - '0';
     // 获取对应的wheel结构体指针
     wheel* p_wheel;
@@ -57,7 +57,7 @@ void handle_exit(){
 
     // 处理set命令
 void handle_set(const char* target, float data) {
-    if(_handle_set_speed())
+    if(_handle_set_speed(target, data))
         printf("done set");;
 }
 
