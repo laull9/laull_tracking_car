@@ -109,18 +109,41 @@ int main(){
     demo_gpio_init();
     demo_tim_init();
 
-    for(uint8_t k;;){
-        k = key_scan(0);
-        switch (k)
-        {
-        case KEY0_PRES:
-            run_commanda_loop();
-            break;
+    while(1){
+        // for(int a = 0; a < 180 ; a++){
+        //     arm_servo_set_angle(&as1, a);
+        //     delay_ms(40);
+        // }
+        // for(int a = 180; a > 0 ; a--){
+        //     arm_servo_set_angle(&as1, a);
+        //     delay_ms(40);
+        // }
         
-        case KEY1_PRES:
-            run_mainrace();
-            break;
-        }
+        arm_servo_set_angle(&as1, 0);
+        delay_ms(1000);
+        arm_servo_set_angle(&as1, 40);
+        delay_ms(1000);
+        arm_servo_set_angle(&as1, 90);
+        delay_ms(1000);
+        arm_servo_set_angle(&as1, 120);
+        delay_ms(1000);
+        arm_servo_set_angle(&as1, 150);
+        delay_ms(1000);
+        arm_servo_set_angle(&as1, 180);
+        delay_ms(1000);
     }
+    // for(uint8_t k;;){
+    //     k = key_scan(0);
+    //     switch (k)
+    //     {
+    //     case KEY0_PRES:
+    //         run_commanda_loop();
+    //         break;
+        
+    //     case KEY1_PRES:
+    //         run_mainrace();
+    //         break;
+    //     }
+    // }
     
 }

@@ -5,3 +5,5 @@ Output
 DebugConfig
 .cmsis/
 Output/
+.vscode/
+.VSCodeCounter/

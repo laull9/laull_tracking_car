@@ -51,19 +51,42 @@ bool _handle_set_speed(const char* target, float data) {
     return 1;
 }
 
+bool _handle_set_arm(const char* target, float data){
+    if(str_equal(target, "a1")){
+        arm_servo_set_angle(&as1, data);
+    }
+    else if (str_equal(target, "a2")){
+        arm_servo_set_angle(&as2, data);
+    }
+    else if (str_equal(target, "a3")){
+        arm_servo_set_angle(&as3, data);
+    }
+    else if (str_equal(target, "a4")){
+        arm_servo_set_angle(&as4, data);
+    }
+    else{
+        return 0;
+    }
+    return 1;
+}
+
 void handle_exit(){
     commands_looping = 0;
     printf("exited\n");
     LED1_OFF();
 }
 
-    // 处理set命令
+// 处理set命令
 void handle_set(const char* target, float data) {
-    if(_handle_set_speed(target, data))
-        printf("done set\n");;
+    if(_handle_set_speed(target, data)){
+        printf("done set speed\n");
+    }
+    else if(_handle_set_arm(target, data)){
+        printf("done set arm\n")
+    }
 }
 
-    // 处理run命令
+// 处理run命令
 void handle_run(const char* target, float time) {
     if (str_equal(target, "f")){
         car_go_forward();
