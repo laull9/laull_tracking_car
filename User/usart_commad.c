@@ -82,7 +82,7 @@ void handle_set(const char* target, float data) {
         printf("done set speed\n");
     }
     else if(_handle_set_arm(target, data)){
-        printf("done set arm\n")
+        printf("done set arm\n");
     }
 }
 
