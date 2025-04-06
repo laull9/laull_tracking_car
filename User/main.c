@@ -50,7 +50,7 @@ void run_mainrace(){
 
     // 按下KEY0按钮开始抓取物块
     while (key_scan(0) != KEY0){
-        delay_ms(20);
+        delay_ms(200);
     }
     grab_object();
 
@@ -118,7 +118,11 @@ int main(){
             break;
         
         case KEY1_PRES:
-            run_mainrace();
+            // run_mainrace();
+            while (key_scan(0) != KEY0){
+                delay_ms(50);
+                printf("choice %d\n", car_line_following_control());
+            }
             break;
         }
     }

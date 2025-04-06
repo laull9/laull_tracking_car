@@ -53,7 +53,7 @@ extern arm_servo as1, as2, as3, as4, as5;
 
 
 // 巡线的黑白线检测反转
-#define TRACKING_REVERSE 0
+#define TRACKING_REVERSE 1
 // 巡线模块的GPIO定义
 #define TRACKING_PIN_1 GPIO_PIN_3
 #define TRACKING_PIN_2 GPIO_PIN_4
@@ -61,6 +61,9 @@ extern arm_servo as1, as2, as3, as4, as5;
 #define TRACKING_PIN_4 GPIO_PIN_6
 #define TRACKING_PORT GPIOG
 #define TRACKING_PIN_ENABLE  __HAL_RCC_GPIOG_CLK_ENABLE
+
+// 直角转弯时的后退延时、转向延时
+extern uint16_t turn_delay_fw, turn_delay_turn;
 
 
 #define BASE_LEFT_ANGLE   0     // 基座左转角度

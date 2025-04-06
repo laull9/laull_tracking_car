@@ -160,6 +160,18 @@
               },
               {
                 "path": "Drivers/BSP/EXTI/exti.c"
+              },
+              {
+                "path": "Drivers/BSP/ATK_MS6050/eMPL/inv_mpu.c"
+              },
+              {
+                "path": "Drivers/BSP/ATK_MS6050/eMPL/inv_mpu_dmp_motion_driver.c"
+              },
+              {
+                "path": "Drivers/BSP/ATK_MS6050/atk_ms6050.c"
+              },
+              {
+                "path": "Drivers/BSP/ATK_MS6050/atk_ms6050_iic.c"
               }
             ],
             "folders": []
@@ -660,7 +672,9 @@
           "Drivers/BSP/ATK_MO1053",
           "Drivers/BSP/VS10XX",
           "Drivers/BSP/OV7725",
-          "Drivers/BSP/EXTI"
+          "Drivers/BSP/EXTI",
+          "Drivers/BSP/ATK_MS6050",
+          "Drivers/BSP/ATK_MS6050/eMPL"
         ],
         "libList": [],
         "defineList": [

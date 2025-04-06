@@ -1,5 +1,6 @@
 #include "demo.h"
 
+uint16_t turn_delay_fw = 500, turn_delay_turn = 1500;
 
 void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
 {
@@ -86,30 +87,41 @@ line_following_choice car_line_following_control() {
 
     // 根据传感器值控制车辆运动
     if (farleft && midleft && midright && farright) {
-        // 四个传感器都检测到黑线，停止
-        car_stop();
-        return choice_stop;
-    } else if (!farleft && !midleft && !midright && !farright) {
         // 四个传感器都检测到白线，直走
         car_go_forward();
         return choice_forward;
+    } else if (!farleft && !midleft && !midright && !farright) {
+        // 四个传感器都检测到黑线，停止
+        car_stop();
+        return choice_stop;
     } else if (farleft && !midleft && !midright && !farright) {
-        // 最左边传感器检测到黑线，左转
-        car_turn_left();
-        return choice_turnleft;
+        // 最左边传感器检测到白线，右转
+        // 直角弯
+        car_go_backward();
+        delay_ms(turn_delay_fw);
+        car_turn_right();
+        delay_ms(turn_delay_turn);
+        return choice_turnright;
+
     } else if (!farleft && !midleft && !midright && farright) {
-        // 最右边传感器检测到黑线，右转
-        car_turn_right();
-        return choice_turnright;
-    } else if (farleft && midleft && !midright && !farright) {
-        // 左边两个传感器检测到黑线，左转
+        // 最右边传感器检测到白线，左转
+        // 直角弯
+        car_go_backward();
+        delay_ms(turn_delay_fw);
+        car_turn_left();
+        delay_ms(turn_delay_turn);
+        return choice_turnleft;
+
+    } else if (!farleft && midleft && midright && farright) {
+        // 左边一个传感器检测到黑线，左转
         car_turn_left();
         return choice_turnleft;
-    } else if (!farleft && !midleft && midright && farright) {
-        // 右边两个传感器检测到黑线，右转
+    } else if (farleft && midleft && midright && !farright) {
+        // 右边一个传感器检测到黑线，右转
         car_turn_right();
         return choice_turnright;
-    } else {
+    }
+    else {
         // 其他情况，直走
         car_go_forward();
         return choice_other;
