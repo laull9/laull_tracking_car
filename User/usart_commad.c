@@ -64,6 +64,9 @@ bool _handle_set_arm(const char* target, float data){
     else if (str_equal(target, "a4")){
         arm_servo_set_angle(&as4, data);
     }
+    else if (str_equal(target, "a5")){
+        arm_servo_set_angle(&as5, data);
+    }
     else{
         return 0;
     }
