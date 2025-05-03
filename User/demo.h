@@ -13,11 +13,7 @@ typedef enum {
 }line_following_choice;
 
 // 速度限幅宏
-#define CLAMP_SPEED(speed) \
-    do { \
-        if (speed < 0) speed = 0; \
-        else if (speed > 100) speed = 100; \
-    } while(0)
+#define CLAMP_SPEED(speed) (speed) < 0 ? 0 : ((speed) > 100 ? 100 : speed)
 
 // 读取循迹模块的值
 uint8_t read_tracking_sensor(uint16_t pin);

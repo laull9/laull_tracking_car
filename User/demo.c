@@ -187,14 +187,14 @@ void tly_control(line_following_choice choice) {
 
         case choice_backward: {
             // 后退时左右轮反向差速修正
-            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w1.speed.backword + adjust)
-                                        , w1, backword);
-            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w2.speed.backword - adjust)
-                                        , w2, backword);
-            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w3.speed.backword - adjust)
-                                        , w3, backword);
-            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w4.speed.backword + adjust)
-                                        , w4, backword);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w1.speed.backward + adjust)
+                                        , w1, backward);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w2.speed.backward - adjust)
+                                        , w2, backward);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w3.speed.backward - adjust)
+                                        , w3, backward);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w4.speed.backward + adjust)
+                                        , w4, backward);
             break;
         }
 

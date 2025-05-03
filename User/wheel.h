@@ -26,9 +26,11 @@ void wheel_runback(wheel* w);
     __HAL_TIM_SET_COMPARE(_wheel.speed_htim, _wheel.speed_tim_channel, compare_value); /* 设置比较值 */ \
 } while (0)
 
-#define WHEEL_SET_SPEED_IMMIDIATELY(speed, _wheel, speedname) do{ \
-    _wheel.speed.speedname = speed; \
-    WHEEL_SET_NOW_SPEED(_wheel, _speedname); \
+#define WHEEL_SET_SPEED_IMMIDIATELY(_speed, _wheel, _speedname)  do { \
+    _wheel.speed._speedname = _speed; \
+    uint32_t period = _wheel.speed_htim->Instance->ARR;/* 获取当前周期 */ \
+    uint32_t compare_value = (period * (_speed)) / 100U; /* 根据百分比计算比较值 */ \
+    __HAL_TIM_SET_COMPARE(_wheel.speed_htim, _wheel.speed_tim_channel, compare_value); /* 设置比较值 */ \
 }while (0)
 
 #define WHEEL_SET_NOW_SPEED_4(_w1, _w2, _w3, _w4, _speedname) do { \
