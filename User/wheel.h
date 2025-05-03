@@ -26,6 +26,11 @@ void wheel_runback(wheel* w);
     __HAL_TIM_SET_COMPARE(_wheel.speed_htim, _wheel.speed_tim_channel, compare_value); /* 设置比较值 */ \
 } while (0)
 
+#define WHEEL_SET_SPEED_IMMIDIATELY(speed, _wheel, speedname) do{ \
+    _wheel.speed.speedname = speed; \
+    WHEEL_SET_NOW_SPEED(_wheel, _speedname); \
+}while (0)
+
 #define WHEEL_SET_NOW_SPEED_4(_w1, _w2, _w3, _w4, _speedname) do { \
     WHEEL_SET_NOW_SPEED(_w1, _speedname); \
     WHEEL_SET_NOW_SPEED(_w2, _speedname); \

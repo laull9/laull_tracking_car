@@ -87,6 +87,14 @@ void handle_set(const char* target, float data) {
     else if(_handle_set_arm(target, data)){
         printf("done set arm\n");
     }
+    else if(str_equal(target, "turn1")){
+        turn_delay_bw = data * 1000;
+        printf("done set turn_b");
+    }
+    else if(str_equal(target, "turn2")){
+        turn_delay_turn = data * 1000;
+        printf("done set turn_t");
+    }
 }
 
 // 处理run命令

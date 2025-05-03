@@ -1,6 +1,6 @@
 #include "demo.h"
 
-uint16_t turn_delay_fw = 500, turn_delay_turn = 1500;
+uint16_t turn_delay_bw = 500, turn_delay_turn = 1500;
 
 void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
 {
@@ -98,7 +98,7 @@ line_following_choice car_line_following_control() {
         // 最左边传感器检测到白线，右转
         // 直角弯
         car_go_backward();
-        delay_ms(turn_delay_fw);
+        delay_ms(turn_delay_bw);
         car_turn_right();
         delay_ms(turn_delay_turn);
         return choice_turnright;
@@ -107,7 +107,7 @@ line_following_choice car_line_following_control() {
         // 最右边传感器检测到白线，左转
         // 直角弯
         car_go_backward();
-        delay_ms(turn_delay_fw);
+        delay_ms(turn_delay_bw);
         car_turn_left();
         delay_ms(turn_delay_turn);
         return choice_turnleft;
@@ -125,6 +125,107 @@ line_following_choice car_line_following_control() {
         // 其他情况，直走
         car_go_forward();
         return choice_other;
+    }
+}
+
+
+static line_following_choice last_choice = choice_stop;
+static int16_t target_gz = 0;
+static float integral = 0;
+static int16_t prev_error = 0;
+
+void tly_control(line_following_choice choice) {
+    int16_t gx, gy, gz;
+    float adjust = 0, base_speed = 0;
+
+    // 获取陀螺仪数据（Z轴为偏航轴）
+    atk_ms6050_get_gyroscope(&gx, &gy, &gz);
+
+    // 检测方向变化时重置控制参数
+    if (choice != last_choice) {
+        target_gz = gz;
+        integral = 0;
+        prev_error = 0;
+        last_choice = choice;
+    }
+
+    // 公共PID参数
+    const float Kp = 0.8f;
+    const float Ki = 0.002f;
+    const float Kd = 0.3f;
+
+    // 需要陀螺仪修正的运动模式
+    if (choice == choice_forward || choice == choice_backward || 
+        choice == choice_moveleft || choice == choice_moveright) {
+        // 计算角度偏差
+        int16_t error = target_gz - gz;
+        
+        // PID计算
+        float proportional = Kp * error;
+        integral += Ki * error;
+        float derivative = Kd * (error - prev_error);
+        prev_error = error;
+        adjust = proportional + integral + derivative;
+
+        // 限幅处理
+        adjust = adjust > 30 ? 30 : (adjust < -30 ? -30 : adjust);
+    }
+
+    switch (choice) {
+        case choice_forward: {
+            // 前进时左右轮差速修正           
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w1.speed.forward - adjust)
+                                        , w1, forward);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w2.speed.forward + adjust)
+                                        , w2, forward);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w3.speed.forward + adjust)
+                                        , w3, forward);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w4.speed.forward - adjust)
+                                        , w4, forward);
+            break;
+        }
+
+        case choice_backward: {
+            // 后退时左右轮反向差速修正
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w1.speed.backword + adjust)
+                                        , w1, backword);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w2.speed.backword - adjust)
+                                        , w2, backword);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w3.speed.backword - adjust)
+                                        , w3, backword);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w4.speed.backword + adjust)
+                                        , w4, backword);
+            break;
+        }
+
+        case choice_moveleft: {
+            // 左平移时前后轮差速修正
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w1.speed.moveleft + adjust)
+                                        , w1, moveleft);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w2.speed.moveleft - adjust)
+                                        , w2, moveleft);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w3.speed.moveleft - adjust)
+                                        , w3, moveleft);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w4.speed.moveleft + adjust)
+                                        , w4, moveleft);
+            break;
+        }
+
+        case choice_moveright: {
+            // 右平移时前后轮反向差速修正
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w1.speed.moveright - adjust)
+                                        , w1, moveright);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w2.speed.moveright + adjust)
+                                        , w2, moveright);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w3.speed.moveright + adjust)
+                                        , w3, moveright);
+            WHEEL_SET_SPEED_IMMIDIATELY(CLAMP_SPEED(w4.speed.moveright - adjust)
+                                        , w4, moveright);
+            break;
+        }
+
+        default:
+            break;
     }
 }
 

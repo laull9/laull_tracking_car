@@ -120,8 +120,8 @@ int main(){
         case KEY1_PRES:
             // run_mainrace();
             while (key_scan(0) != KEY0){
-                delay_ms(50);
-                printf("choice %d\n", car_line_following_control());
+                delay_ms(20);
+                tly_control(car_line_following_control());
             }
             break;
         }
