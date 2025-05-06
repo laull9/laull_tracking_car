@@ -14,14 +14,9 @@ void grab_object();
 // 释放物体（张开夹持器）
 void release_object();
 
-// 机械臂左转（基座旋转）
-void rotate_base_left();
+void as2_up();
 
-// 机械臂右转（基座旋转）
-void rotate_base_right();
-
-// 机械臂收起（折叠姿态）
-void retract_arm();
+void as2_down();
 
 
 #endif // !__ARM_SERVO_INCLUDE__

@@ -4,9 +4,14 @@
 #define str_equal(s1, s2) (strcmp(s1, s2) == 0)
 bool commands_looping = 0;
 
-void _car_time_stop(float time){
+void _car_time_stop(float time, line_following_choice choice){
+    const u16 spilit_time = 20;
     if (time != 0){
         delay_ms(time * 1000);
+        // for (u32 i = 0 ; i < time * 1000 / spilit_time; i++){
+        //     tly_control(choice);
+        //     delay_ms(time * spilit_time);
+        // }
         car_stop();
     }
 }
@@ -101,27 +106,46 @@ void handle_set(const char* target, float data) {
 void handle_run(const char* target, float time) {
     if (str_equal(target, "f")){
         car_go_forward();
-        _car_time_stop(time);
+        _car_time_stop(time, choice_forward);
     }
     else if (str_equal(target, "b")){
         car_go_backward();
-        _car_time_stop(time);
+        _car_time_stop(time, choice_backward);
     }
     else if (str_equal(target, "ml")){
         car_move_left();
-        _car_time_stop(time);
+        _car_time_stop(time, choice_moveleft);
     }
     else if (str_equal(target, "mr")){
         car_move_right();
-        _car_time_stop(time);
+        _car_time_stop(time, choice_moveright);
     }
     else if (str_equal(target, "tl")){
         car_turn_left();
-        _car_time_stop(time);
+        _car_time_stop(time, choice_turnleft);
     }
     else if (str_equal(target, "tr")){
         car_turn_right();
-        _car_time_stop(time);
+        _car_time_stop(time, choice_turnright);
+    }
+    else if (str_equal(target, "tl2")){
+        car_turn_left_2();
+    }
+    else if (str_equal(target, "tr2")){
+        car_turn_right_2();
+    }
+    
+    else if (str_equal(target, "grab")){
+        grab_object();
+    }
+    else if (str_equal(target, "release")){
+        release_object();
+    }
+    else if (str_equal(target, "a2up")){
+        as2_up();
+    }
+    else if (str_equal(target, "a2down")){
+        as2_down();
     }
     else{
         return;

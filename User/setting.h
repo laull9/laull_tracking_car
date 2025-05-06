@@ -7,6 +7,12 @@ typedef struct{
     uint8_t forward, backward, moveleft, moveright, turnleft, turnright;
 }wheel_speed;
 
+typedef enum {
+    choice_stop, choice_forward, choice_backward, choice_turnleft, choice_turnright, 
+    choice_moveleft, choice_moveright, choice_turnleft2, choice_turnright2,
+    choice_other
+}line_following_choice;
+
 // 轮子带电机
 typedef struct{
     uint16_t pin_0, pin_1;
@@ -49,7 +55,7 @@ extern wheel w4;
 
 
 // 机械臂电机
-extern arm_servo as1, as2, as3, as4, as5;
+extern arm_servo as1, as2 , as3, as4, as5;
 
 
 // 巡线的黑白线检测反转
@@ -63,16 +69,13 @@ extern arm_servo as1, as2, as3, as4, as5;
 #define TRACKING_PIN_ENABLE  __HAL_RCC_GPIOG_CLK_ENABLE
 
 // 直角转弯时的后退延时、转向延时
-extern uint16_t turn_delay_bw, turn_delay_turn;
+extern u16  turn_delay_bw;
+extern u16  turn_delay_turn;
 
-
-#define BASE_LEFT_ANGLE   0     // 基座左转角度
-#define BASE_RIGHT_ANGLE  180   // 基座右转角度
-#define GRAB_ANGLE       30     // 夹持器闭合角度
-#define RELEASE_ANGLE    150    // 夹持器张开角度
-#define RETRACT_AS2      20     // 收起时舵机2角度
-#define RETRACT_AS3      160    // 收起时舵机3角度
-#define RETRACT_AS4      90     // 收起时舵机4角度
+#define GRAB_ANGLE       140     // 夹持器闭合角度
+#define RELEASE_ANGLE    90      // 夹持器张开角度
+#define RETRACT_AS2      100     // 收起时舵机2角度
+#define RELEASE_AS2      30
 
 
 #endif // !__SETTING_INCLUDE__

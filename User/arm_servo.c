@@ -26,35 +26,45 @@ uint16_t angle_to_tim_val(float angle)
 
 
 void grab_object() {
-    arm_servo_set_angle(&as5, GRAB_ANGLE);
-    // delay_ms(500);
+    arm_servo_set_angle(&as1, GRAB_ANGLE);
+    delay_ms(300);
 }
 
 
 void release_object() {
-    arm_servo_set_angle(&as5, RELEASE_ANGLE);
-    // delay_ms(500);
+    arm_servo_set_angle(&as1, RELEASE_ANGLE);
+    delay_ms(300);
 }
 
 
-void rotate_base_left() {
-    arm_servo_set_angle(&as1, BASE_LEFT_ANGLE);
-    // delay_ms(1000);
+void as2_up() {
+    u8 step = 4;
+    if (as2.now_angle < RETRACT_AS2){
+        for (float now = as2.now_angle; now <= RETRACT_AS2; now += step){
+            arm_servo_set_angle(&as2, now);
+            delay_ms(50);
+        }
+    }
+    else{
+        for (float now = as2.now_angle; now >= RETRACT_AS2; now -= step){
+            arm_servo_set_angle(&as2, now);
+            delay_ms(50);
+        }
+    }
 }
 
-
-void rotate_base_right() {
-    arm_servo_set_angle(&as1, BASE_RIGHT_ANGLE);
-    // delay_ms(1000);
-}
-
-
-void retract_arm() {
-    // 先收起远端关节
-    arm_servo_set_angle(&as4, RETRACT_AS4);
-    delay_ms(300);
-    arm_servo_set_angle(&as3, RETRACT_AS3);
-    delay_ms(300);
-    arm_servo_set_angle(&as2, RETRACT_AS2);
-    delay_ms(300);
+void as2_down() {
+    u8 step = 4;
+    if (as2.now_angle < RELEASE_AS2){
+        for (float now = as2.now_angle; now <= RELEASE_AS2; now += step){
+            arm_servo_set_angle(&as2, now);
+            delay_ms(50);
+        }
+    }
+    else{
+        for (float now = as2.now_angle; now >= RELEASE_AS2; now -= step){
+            arm_servo_set_angle(&as2, now);
+            delay_ms(50);
+        }
+    }
 }

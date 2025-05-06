@@ -3,6 +3,7 @@
 
 #include "laullstm32.h"
 #include "setting.h"
+#include "atk_ms6050.h"
 
 void wheel_init(wheel* w);
 
@@ -19,6 +20,9 @@ void wheel_runback(wheel* w);
 //     uint32_t compare_value = (period * (duty_cycle_percent)) / 100U; /* 根据百分比计算比较值 */ \
 //     __HAL_TIM_SET_COMPARE(&TIM_Handle, TIM_channel, compare_value); /* 设置比较值 */ \
 // } while (0)
+
+// 速度限幅宏
+#define CLAMP_SPEED(speed) (speed) < 0 ? 0 : ((speed) > 100 ? 100 : (speed))
 
 #define WHEEL_SET_NOW_SPEED(_wheel, _speedname) do { \
     uint32_t period = _wheel.speed_htim->Instance->ARR;/* 获取当前周期 */ \
@@ -53,6 +57,13 @@ void car_move_left();
 void car_move_right();
 // 停止
 void car_stop();
+
+void car_turn_right_2();
+
+void car_turn_left_2();
+
+// 陀螺仪控制
+void tly_control(line_following_choice choice);
 
 
 #endif // !__MONTER__INCLUDE__

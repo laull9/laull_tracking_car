@@ -8,13 +8,6 @@
 #include "usart_commad.h"
 #include "atk_ms6050.h"
 
-typedef enum {
-    choice_stop, choice_forward, choice_backward, choice_turnleft, choice_turnright, choice_moveleft, choice_moveright, choice_other
-}line_following_choice;
-
-// 速度限幅宏
-#define CLAMP_SPEED(speed) (speed) < 0 ? 0 : ((speed) > 100 ? 100 : speed)
-
 // 读取循迹模块的值
 uint8_t read_tracking_sensor(uint16_t pin);
 
@@ -26,9 +19,6 @@ void demo_gpio_init();
 
 // 初始化tim
 void demo_tim_init();
-
-// 陀螺仪控制
-void tly_control(line_following_choice choice);
 
 
 
