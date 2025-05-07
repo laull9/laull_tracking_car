@@ -13,20 +13,20 @@ TIM_HandleTypeDef tim2, tim3, tim4;
 //     电机驱动板 1: 左右前轮
 //     轮子1:  正负极连F1 F2       PWM连tim3-4  B1        输出
         wheel w1 = {WHEEL_PIN_1_1, WHEEL_PIN_1_2, WHEEL_PORT, WHEEL_PORT, &tim3, TIM_CHANNEL_4, 
-        /*单轮速度配置*/{/*forward*/DEFAULT_SPEED, /*backward*/DEFAULT_SPEED, /*moveleft*/DEFAULT_SPEED, /*moveright*/DEFAULT_SPEED, /*turnleft*/DEFAULT_SPEED, /*turnright*/DEFAULT_SPEED}};
+        /*单轮速度配置*/{/*forward*/DEFAULT_SPEED, /*backward*/DEFAULT_SPEED + 25, /*moveleft*/DEFAULT_SPEED, /*moveright*/DEFAULT_SPEED, /*turnleft*/DEFAULT_SPEED, /*turnright*/DEFAULT_SPEED + 30}};
 
 //     轮子2:  正负极连F3 F4       PWM连tim4-2 D13        输出
         wheel w2 = {WHEEL_PIN_2_1, WHEEL_PIN_2_2, WHEEL_PORT, WHEEL_PORT, &tim4, TIM_CHANNEL_2, 
-        /*单轮速度配置*/{/*forward*/DEFAULT_SPEED, /*backward*/DEFAULT_SPEED, /*moveleft*/DEFAULT_SPEED, /*moveright*/DEFAULT_SPEED, /*turnleft*/DEFAULT_SPEED, /*turnright*/DEFAULT_SPEED}};
+        /*单轮速度配置*/{/*forward*/DEFAULT_SPEED, /*backward*/DEFAULT_SPEED, /*moveleft*/DEFAULT_SPEED, /*moveright*/DEFAULT_SPEED, /*turnleft*/DEFAULT_SPEED + 30, /*turnright*/DEFAULT_SPEED}};
         
 //     电机驱动板 2: 左右后轮
 //     轮子3:  正负极连F5 F6       PWM连tim4-3 D14        输出
         wheel w3 = {WHEEL_PIN_3_1, WHEEL_PIN_3_2, WHEEL_PORT, WHEEL_PORT, &tim4, TIM_CHANNEL_3, 
-        /*单轮速度配置*/{/*forward*/DEFAULT_SPEED, /*backward*/DEFAULT_SPEED, /*moveleft*/DEFAULT_SPEED, /*moveright*/DEFAULT_SPEED, /*turnleft*/DEFAULT_SPEED, /*turnright*/DEFAULT_SPEED}};
+        /*单轮速度配置*/{/*forward*/DEFAULT_SPEED, /*backward*/DEFAULT_SPEED + 25, /*moveleft*/DEFAULT_SPEED, /*moveright*/DEFAULT_SPEED - 13, /*turnleft*/DEFAULT_SPEED, /*turnright*/DEFAULT_SPEED + 30}};
         
 //     轮子4:  正负极连F7 F8       PWM连tim4-4 D15        输出
         wheel w4 = {WHEEL_PIN_4_1, WHEEL_PIN_4_2, WHEEL_PORT, WHEEL_PORT, &tim4, TIM_CHANNEL_4, 
-        /*单轮速度配置*/{/*forward*/DEFAULT_SPEED, /*backward*/DEFAULT_SPEED, /*moveleft*/DEFAULT_SPEED, /*moveright*/DEFAULT_SPEED, /*turnleft*/DEFAULT_SPEED, /*turnright*/DEFAULT_SPEED}};
+        /*单轮速度配置*/{/*forward*/DEFAULT_SPEED, /*backward*/DEFAULT_SPEED, /*moveleft*/DEFAULT_SPEED, /*moveright*/DEFAULT_SPEED - 13, /*turnleft*/DEFAULT_SPEED + 30, /*turnright*/DEFAULT_SPEED}};
         
   
 //     机械臂-舵机1:  正负极连5v电源     PWM连tim2-1  A15  输出
@@ -48,9 +48,9 @@ void run_mainrace(){
     const u8 TIME_STEP = 20;
     const u32 TIME_TURN1 = 4.7 * 1000;
     const u32 TIME_TURN2 = 0.8 * 1000;
-    const u32 TIME_OBJECT = 1.65 * 1000;
-    const u32 TIME_BIDA = 2.4 * 1000;
-    const u32 TIME_FILLAY = 1.7 * 1000;
+    const u32 TIME_OBJECT = 1.7 * 1000;
+    const u32 TIME_BIDA = 2.9 * 1000;
+    const u32 TIME_FILLAY = 1.5 * 1000;
     const u32 TIME_MOVE_RIGHT = 0.8 * 1000;
     // 开始阶段，收起机械臂，张开抓取夹
     // as2_up();
@@ -79,7 +79,7 @@ void run_mainrace(){
 
     // 过第二个直角弯
     turn_delay_bw -= 50;
-    turn_delay_turn -= 70;
+    // turn_delay_turn -= 70;
     for (u32 i = 0; i < TIME_TURN2; i += TIME_STEP){
         c = car_line_following_control();
         if (c == choice_turnright2){

@@ -1,7 +1,7 @@
 #include "wheel.h"
 
 u16  turn_delay_bw = 280;
-u16  turn_delay_turn = 800;
+u16  turn_delay_turn = 850;
 
 void wheel_init(wheel* w){
     GPIO_InitTypeDef GPIO_InitStruct = {0};
