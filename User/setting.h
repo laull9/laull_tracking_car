@@ -72,10 +72,10 @@ extern arm_servo as1, as2 , as3, as4, as5;
 extern u16  turn_delay_bw;
 extern u16  turn_delay_turn;
 
-#define GRAB_ANGLE       140     // 夹持器闭合角度
-#define RELEASE_ANGLE    90      // 夹持器张开角度
+#define GRAB_ANGLE       115     // 夹持器闭合角度 120
+#define RELEASE_ANGLE    70      // 夹持器张开角度
 #define RETRACT_AS2      100     // 收起时舵机2角度
-#define RELEASE_AS2      30
+#define RELEASE_AS2      25
 
 
 #endif // !__SETTING_INCLUDE__
